@@ -2,12 +2,20 @@ package com.boredcodemonkey.pillbug;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
 
+import com.boredcodemonkey.pillbug.adapters.DrugResultsAdapter;
+import com.boredcodemonkey.pillbug.contracts.drugnames.Data;
 import com.boredcodemonkey.pillbug.contracts.drugnames.DrugNameResults;
 import com.boredcodemonkey.pillbug.interfaces.DailyMedAPI;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,6 +34,13 @@ public class DrugLookupActivity extends AppCompatActivity {
 
     private DailyMedAPI dailyMedAPIService = retrofit.create(DailyMedAPI.class);
 
+    private DrugResultsAdapter drugResultsAdapter;
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+
+    private EditText txtDrugSearch;
+    private RecyclerView lstDrugLookupResults;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +50,16 @@ public class DrugLookupActivity extends AppCompatActivity {
     }
 
     private void initializeUI() {
-        ((EditText)findViewById(R.id.txtDrugSearch)).addTextChangedListener(drugSearchWatcher);
+        txtDrugSearch = (EditText)findViewById(R.id.txtDrugSearch);
+        txtDrugSearch.addTextChangedListener(drugSearchWatcher);
+
+        lstDrugLookupResults = (RecyclerView) findViewById(R.id.lstDrugLookupResults);
+
+        layoutManager = new LinearLayoutManager(this);
+
+        recyclerView = (RecyclerView) findViewById(R.id.lstDrugLookupResults);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(layoutManager);
     }
 
     private final TextWatcher drugSearchWatcher = new TextWatcher() {
@@ -61,9 +85,12 @@ public class DrugLookupActivity extends AppCompatActivity {
         @Override
         public void onResponse(Call<DrugNameResults> call, Response<DrugNameResults> response) {
             if (response.body().getData().length == 0) {
-
+                lstDrugLookupResults.setVisibility(View.INVISIBLE);
             } else {
-
+                lstDrugLookupResults.setVisibility(View.VISIBLE);
+                ArrayList<Data> results = new ArrayList<>(Arrays.asList(response.body().getData()));
+                drugResultsAdapter = new DrugResultsAdapter(results);
+                recyclerView.setAdapter(drugResultsAdapter);
             }
         }
 

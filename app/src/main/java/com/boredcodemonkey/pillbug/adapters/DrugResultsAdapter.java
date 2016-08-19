@@ -47,7 +47,7 @@ public class DrugResultsAdapter extends RecyclerView.Adapter<DrugResultsAdapter.
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Data currentRecord = drugNameResults.get(position);
         holder.txtDrugName.setText(currentRecord.getDrug_name());
-        holder.txtDrugName.setText(NameType.fromShortName(currentRecord.getName_type()).toString());
+        holder.txtGenericIndicator.setText(NameType.fromShortName(currentRecord.getName_type()).toString());
     }
 
     @Override

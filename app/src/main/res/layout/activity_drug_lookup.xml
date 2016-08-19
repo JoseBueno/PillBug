@@ -26,6 +26,7 @@
         android:layout_height="match_parent"
         android:id="@+id/lstDrugLookupResults"
         android:layout_below="@+id/txtDrugSearch"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        tools:listitem="@layout/listitem_drug_result" />
 
 </RelativeLayout>
