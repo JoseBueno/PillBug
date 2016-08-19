@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Pill Bug</string>
+    <string name="hintDrugName">type in a drug name</string>
+</resources>
