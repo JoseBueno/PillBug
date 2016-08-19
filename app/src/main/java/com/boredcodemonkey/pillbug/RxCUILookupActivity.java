@@ -9,9 +9,8 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 
-import com.boredcodemonkey.pillbug.adapters.DrugResultsAdapter;
-import com.boredcodemonkey.pillbug.contracts.drugnames.Data;
-import com.boredcodemonkey.pillbug.contracts.drugnames.DrugNameResults;
+import com.boredcodemonkey.pillbug.adapters.RxCUIsResultsAdapter;
+import com.boredcodemonkey.pillbug.contracts.rxcui.RxCUIResults;
 import com.boredcodemonkey.pillbug.interfaces.DailyMedAPI;
 
 import java.util.ArrayList;
@@ -23,7 +22,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class DrugLookupActivity extends AppCompatActivity {
+public class RxCUILookupActivity extends AppCompatActivity {
+
 
     private static final String BASE_URL = "https://dailymed.nlm.nih.gov/dailymed/services/";
 
@@ -34,7 +34,7 @@ public class DrugLookupActivity extends AppCompatActivity {
 
     private DailyMedAPI dailyMedAPIService = retrofit.create(DailyMedAPI.class);
 
-    private DrugResultsAdapter resultsAdapter;
+    private RxCUIsResultsAdapter resultsAdapter;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
 
@@ -44,8 +44,7 @@ public class DrugLookupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_drug_lookup);
-
+        setContentView(R.layout.activity_rx_cuilookup);
         initializeUI();
     }
 
@@ -78,28 +77,26 @@ public class DrugLookupActivity extends AppCompatActivity {
             if (editable.length() < 3) {
                 lstDrugLookupResults.setVisibility(View.INVISIBLE);
             } else {
-                Call<DrugNameResults> call = dailyMedAPIService.searchDrugs(editable.toString());
+                Call<RxCUIResults> call = dailyMedAPIService.searchRxCUIs(editable.toString());
                 call.enqueue(lookupCallback);
             }
-
         }
     };
 
-    private final Callback<DrugNameResults> lookupCallback = new Callback<DrugNameResults>() {
+    private final Callback<RxCUIResults> lookupCallback = new Callback<RxCUIResults>() {
         @Override
-        public void onResponse(Call<DrugNameResults> call, Response<DrugNameResults> response) {
+        public void onResponse(Call<RxCUIResults> call, Response<RxCUIResults> response) {
             if (response.body().getData().length > 0) {
                 lstDrugLookupResults.setVisibility(View.VISIBLE);
-                ArrayList<Data> results = new ArrayList<>(Arrays.asList(response.body().getData()));
-                resultsAdapter = new DrugResultsAdapter(results);
+                ArrayList<com.boredcodemonkey.pillbug.contracts.rxcui.Data> results = new ArrayList<>(Arrays.asList(response.body().getData()));
+                resultsAdapter = new RxCUIsResultsAdapter(results);
                 recyclerView.setAdapter(resultsAdapter);
             }
         }
 
         @Override
-        public void onFailure(Call<DrugNameResults> call, Throwable t) {
+        public void onFailure(Call<RxCUIResults> call, Throwable t) {
             int i = 0;
         }
     };
-
 }

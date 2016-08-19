@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     View.OnClickListener onTheButtonClicked = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            startActivity(new Intent(MainActivity.this, DrugLookupActivity.class));
+            startActivity(new Intent(MainActivity.this, RxCUILookupActivity.class));
         }
     };
 }
