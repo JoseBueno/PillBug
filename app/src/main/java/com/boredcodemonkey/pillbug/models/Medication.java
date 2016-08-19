@@ -12,5 +12,6 @@ public class Medication extends RealmObject {
 
     @PrimaryKey
     private long id;
-    
+    private String name;
+
 }
