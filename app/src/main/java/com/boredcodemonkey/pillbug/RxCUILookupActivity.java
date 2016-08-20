@@ -8,10 +8,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.boredcodemonkey.pillbug.adapters.RxCUIsResultsAdapter;
+import com.boredcodemonkey.pillbug.contracts.rxcui.Data;
 import com.boredcodemonkey.pillbug.contracts.rxcui.RxCUIResults;
 import com.boredcodemonkey.pillbug.interfaces.DailyMedAPI;
+import com.boredcodemonkey.pillbug.interfaces.RecyclerItemClicked;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +25,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RxCUILookupActivity extends AppCompatActivity {
+public class RxCUILookupActivity extends AppCompatActivity implements RecyclerItemClicked<Data> {
 
 
     private static final String BASE_URL = "https://dailymed.nlm.nih.gov/dailymed/services/";
@@ -89,7 +92,7 @@ public class RxCUILookupActivity extends AppCompatActivity {
             if (response.body().getData().length > 0) {
                 lstDrugLookupResults.setVisibility(View.VISIBLE);
                 ArrayList<com.boredcodemonkey.pillbug.contracts.rxcui.Data> results = new ArrayList<>(Arrays.asList(response.body().getData()));
-                resultsAdapter = new RxCUIsResultsAdapter(results);
+                resultsAdapter = new RxCUIsResultsAdapter(results, RxCUILookupActivity.this);
                 recyclerView.setAdapter(resultsAdapter);
             }
         }
@@ -99,4 +102,9 @@ public class RxCUILookupActivity extends AppCompatActivity {
             int i = 0;
         }
     };
+
+    @Override
+    public void onListItemClicked(Data data) {
+        Toast.makeText(this, data.getRxstring(), Toast.LENGTH_LONG).show();
+    }
 }

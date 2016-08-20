@@ -1,5 +1,7 @@
 package com.boredcodemonkey.pillbug.models;
 
+import java.util.ArrayList;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -14,6 +16,7 @@ public class Person extends RealmObject {
     private long id;
     private String firstName;
     private String lastName;
+    private ArrayList<Medication> medications;
 
     public long getId() {
         return id;
@@ -37,5 +40,13 @@ public class Person extends RealmObject {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public ArrayList<Medication> getMedications() {
+        return medications;
+    }
+
+    public void setMedications(ArrayList<Medication> medications) {
+        this.medications = medications;
     }
 }
