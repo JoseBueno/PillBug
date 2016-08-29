@@ -18,7 +18,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".DrugLookupActivity" />
-        <activity android:name=".RxCUILookupActivity"></activity>
+        <activity android:name=".RxCUILookupActivity" />
+        <activity android:name=".PersonActivity"></activity>
     </application>
 
 </manifest>
